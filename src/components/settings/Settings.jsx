@@ -21,6 +21,8 @@ const Settings = () => {
   const { fees, coinPrice, title, selectedImage } = useSelector(
     (state) => state.settings
   ); // Include selectedImage in state
+const [localaccnumber, setlocalAccnumber] = useState("");
+const [localaccname, setlocalAccname] = useState("John Doe");
 
   const [localFees, setLocalFees] = useState(fees);
   const [localCoinPrice, setLocalCoinPrice] = useState(coinPrice);
@@ -38,6 +40,8 @@ const [previewImage, setPreviewImage] = useState(""); // To store the temporary 
           setLocalFees(data.fees);
           setLocalCoinPrice(data.coinPrice);
           setLocalTitle(data.title);
+          setlocalAccnumber(data.accnumber)
+          setlocalAccname(data.accname)
           setImgurl(data.imageUrl)
         }
       } catch (error) {
@@ -54,6 +58,8 @@ const [previewImage, setPreviewImage] = useState(""); // To store the temporary 
         fees: parseFloat(localFees),
         coinPrice: parseFloat(localCoinPrice),
         title: localTitle,
+        accnumber: localaccnumber,
+        accname: localaccname
       };
 
       // Dispatch an action to update the Redux store
@@ -128,6 +134,24 @@ const [previewImage, setPreviewImage] = useState(""); // To store the temporary 
           onChange={(e) => setLocalTitle(e.target.value)}
         />
       </div>
+      <div className="form-group">
+  <label className="label">Account Number</label>
+  <input
+    className="input"
+    type="text"
+    value={localaccnumber}
+    onChange={(e) => setlocalAccnumber(e.target.value)} 
+  />
+</div>
+<div className="form-group">
+  <label className="label">Account Name</label>
+  <input
+    className="input"
+    type="text"
+    value={localaccname}
+    onChange={(e) => setlocalAccname(e.target.value)}
+  />
+</div>
       <div className="image-container">
         {previewImage && (
           <img

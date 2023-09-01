@@ -7,6 +7,7 @@ const settingsSlice = createSlice({
     fees: 0,
     coinPrice: 0,
     title: '',
+    accnumber: 0,
     selectedImage: null, // Add selectedImage property
     // ... other state properties
   },
@@ -15,6 +16,8 @@ const settingsSlice = createSlice({
       state.fees = action.payload.fees;
       state.coinPrice = action.payload.coinPrice;
       state.title = action.payload.title;
+      state.accnumber = action.payload.accnumber;
+      state.accname = action.payload.accname;
       // ... update other state properties
     },
     updateSelectedImage: (state, action) => {

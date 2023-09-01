@@ -40,7 +40,7 @@ const Products = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenb, setIsModalOpenb] = useState(false);
   
-  const [reward, setReward] = useState("");
+  const [reward, setReward] = useState(0);
   const [description, setDescription] = useState("");
   const [picture, setPicture] = useState("");
   const [docid, setDocid] = useState("");
@@ -61,7 +61,7 @@ const Products = () => {
   const handleOkb = () => {
     setIsModalOpenb(false);
     setDescription("");
-    setReward("");
+    setReward(0);
     setPicture("");
     setDocid("")
   };
@@ -71,7 +71,7 @@ const Products = () => {
   const handleCancelb = () => {
     setIsModalOpenb(false);
     setDescription("");
-    setReward("");
+    setReward(0);
     setPicture("");
     setDocid("")
   };
@@ -81,7 +81,6 @@ const Products = () => {
   const handleClose = () => setOpen(false);
   const [change, setChange] = useState();
 
-
   const handleSave = async () => {
     if (!reward || !description || !picture) {
       toast.error("Please fill in all fields.");
@@ -89,22 +88,23 @@ const Products = () => {
     }
     try {
       const productsCollection = collection(db, "products");
-
+  
       await addDoc(productsCollection, {
-        reward,
+        reward: Number(reward), // Convert the reward to a number
         description,
         Link: picture,
       });
-
+  
       toast.success("Data saved successfully");
       // Clear input fields
-      setReward("");
+      setReward(0);
       setDescription("");
       setPicture("");
     } catch (error) {
       toast.error("Error saving data:");
     }
   };
+  
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -143,7 +143,7 @@ const Products = () => {
   
         toast.success("Data updated successfully");
         setDescription("");
-        setReward("");
+        setReward(0);
         setPicture("");
          setDocid("")
         // Close the modal
@@ -251,7 +251,7 @@ const Products = () => {
         <div style={{ marginBottom: "16px" }}>
           <label htmlFor="reward">Reward:</label>
           <input
-            type="text"
+            type="number"
             id="reward"
             value={reward}
             onChange={(e) => setReward(e.target.value)}
