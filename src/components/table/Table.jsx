@@ -3,7 +3,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import {LRUCache} from 'lru-cache'
 import {
   collection,
   query,
@@ -11,17 +10,16 @@ import {
   deleteDoc,
   doc,
   updateDoc,
-  onSnapshot,
+  orderBy,
+  limit,
   getDoc,
   getDocs,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { AiFillDelete } from 'react-icons/ai';
 
-const cache = new LRUCache({
-  max: 200, // Maximum number of items to store in the cache
-  maxAge: 1000 * 60 * 10 // Maximum age of cached items in milliseconds (10 minutes)
-});
+const ITEMS_PER_PAGE = 10;
+
 const Table = () => {
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,35 +27,64 @@ const Table = () => {
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastSeverity, setToastSeverity] = useState('');
+  const [lastDocument, setLastDocument] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      // Check if data is already cached
+      const cachedData = getCachedData();
+      if (cachedData) {
+        setData(cachedData);
+        setLoading(false);
+      } else {
+        const q = query(
+          collection(db, 'users'),
+          where('approved', '==', true),
+          orderBy('name'), // You can specify the order here
+          limit(ITEMS_PER_PAGE)
+        );
+
+        const snapshot = await getDocs(q);
+        const list = snapshot.docs.map((doc) => ({ doc_id: doc.id, ...doc.data() }));
+
+        if (snapshot.docs.length > 0) {
+          setLastDocument(snapshot.docs[snapshot.docs.length - 1]);
+        } else {
+          setLastDocument(null);
+        }
+
+        setData(list);
+        setLoading(false);
+
+        // Cache the fetched data
+        setCachedData(list);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCachedData = () => {
+    const cachedData = localStorage.getItem('cachedData');
+    return cachedData ? JSON.parse(cachedData) : null;
+  };
+
+  const setCachedData = (data) => {
+    localStorage.setItem('cachedData', JSON.stringify(data));
+  };
+
+  const handleRefresh = () => {
+    // Clear the cache and fetch fresh data
+    localStorage.removeItem('cachedData');
+    fetchData();
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Check if data is already cached
-        if (cache.has('userData')) {
-          setData(cache.get('userData'));
-        } else {
-          const snapshot = await getDocs(
-            query(collection(db, 'users'), where('approved', '==', true))
-          );
-  
-          const list = snapshot.docs.map((doc) => ({ doc_id: doc.id, ...doc.data() }));
-          const filteredList = list.filter((user) =>
-            user.name.toLowerCase().includes(searchQuery.toLowerCase())
-          );
-  
-          // Cache the fetched and filtered data
-          cache.set('userData', filteredList);
-          setData(filteredList);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  
     fetchData();
   }, [searchQuery]);
-  
 
   const handleDelete = async (id) => {
     try {
@@ -68,18 +95,31 @@ const Table = () => {
   };
 
   const handleApprove = async (docId, inputValue) => {
-    const docRef = doc(db, 'users', docId);
-
     try {
+      const updatedData = data.map((user) => {
+        if (user.doc_id === docId) {
+          const currentBalance = user.balance || 0;
+          const newBalance = currentBalance + parseInt(inputValue);
+          return { ...user, balance: newBalance };
+        }
+        return user;
+      });
+
+      setData(updatedData);
+
+      setToastMessage('Updated successfully');
+      setToastSeverity('success');
+      setIsToastOpen(true);
+
+      // Perform the Firestore update here
+      const docRef = doc(db, 'users', docId);
       const userDoc = await getDoc(docRef);
+
       if (userDoc.exists()) {
         const currentBalance = userDoc.data().balance || 0;
         const newBalance = currentBalance + parseInt(inputValue);
 
         await updateDoc(docRef, { balance: newBalance });
-        setToastMessage('Updated successfully');
-        setToastSeverity('success');
-        setIsToastOpen(true);
       }
     } catch (error) {
       console.error('Error updating balance:', error);
@@ -153,6 +193,14 @@ const Table = () => {
           fontSize: '16px',
         }}
       />
+        <Button
+        variant="contained"
+        color="primary"
+        onClick={handleRefresh}
+        style={{ marginBottom: '16px', marginLeft: '8px' }}
+      >
+        Refresh
+      </Button>
       <div className="datatable">
         <DataGrid className="datagrid" columns={columns} rows={data} pageSize={10} />
       </div>

@@ -1,15 +1,14 @@
 import "./style.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import {BiSolidEdit} from "react-icons/bi"
-import {AiFillCheckCircle, AiFillDelete} from "react-icons/ai"
-import {TbLockCheck} from "react-icons/tb"
+import { BiSolidEdit } from "react-icons/bi"
+import { AiFillCheckCircle, AiFillDelete } from "react-icons/ai"
+import { TbLockCheck } from "react-icons/tb"
 import { LRUCache } from 'lru-cache'
 import {
   collection,
@@ -43,47 +42,44 @@ const EasyPisaTale = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [change,setChange] = useState()
+  const [change, setChange] = useState()
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Check if data is already cached
-        if (cache.has("userData")) {
-          console.log("Fetching data from cache");
-          setData(cache.get("userData"));
-          setLoading(false); // Data fetched from cache, loading is complete
-        } else {
-          console.log("Fetching data from Firestore");
-  
-          const q = query(collection(db, "users"), where("pendeing", "==", true), where("pyment_ok", "==", true));
-          
-          const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            const userList = [];
-            querySnapshot.forEach((doc) => {
-              userList.push({ doc_id: doc.id, ...doc.data() });
-            });
-            
-            cache.set("userData", userList); // Cache the fetched data
-            setData(userList);
-            setLoading(false); // Data fetched, loading is complete
+
+  const fetchData = async () => {
+    try {
+      // Check if data is already cached
+      if (cache.has("userData")) {
+        console.log("Fetching data from cache");
+        setData(cache.get("userData"));
+        setLoading(false); // Data fetched from cache, loading is complete
+      } else {
+        console.log("Fetching data from Firestore");
+
+        const q = query(collection(db, "users"), where("pendeing", "==", true), where("pyment_ok", "==", true));
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          const userList = [];
+          querySnapshot.forEach((doc) => {
+            userList.push({ doc_id: doc.id, ...doc.data() });
           });
-          
-          return () => unsubscribe();
-        }
-      } catch (err) {
-        console.log(err);
+
+          cache.set("userData", userList); // Cache the fetched data
+          setData(userList);
+          setLoading(false); // Data fetched, loading is complete
+        });
+
+        return () => unsubscribe();
       }
-    };
-  
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
-  
-  const columns = [
-    // Define your columns
-  ];
 
   if (loading) {
     return <p>Loading...</p>;
@@ -200,7 +196,7 @@ const EasyPisaTale = () => {
     { field: 'pyment_ok', headerName: 'Payment', width: 70 ,height:50,   renderCell: (params) => {
       return (
         <div style={{textAlign:"center"}} >
-            {params.row.pyment_ok ? (<p style={{color:"green"}}>Send</p>):(<p style={{color:"red"}}>Not Send</p>)}
+            {params.row.pyment_ok ? (<p style={{color:"green"}}>Recived </p>):(<p style={{color:"red"}}>Not Recived</p>)}
           </div>
           
           ) }},
