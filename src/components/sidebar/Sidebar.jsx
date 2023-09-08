@@ -57,6 +57,17 @@ const Sidebar = () => {
             <span>Approved Users</span>
           </li>
           </Link>
+
+
+
+          <Link to="/levels" style={{ textDecoration: "none" }}>
+          <li>
+            <CreditCardIcon className="icon"  />
+            <span>Levels</span>
+          </li>
+          </Link>
+
+
           <Link to='/products'   style={{ textDecoration: "none" }} >
           <li>
             <LocalShippingIcon className="icon" />

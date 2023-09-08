@@ -151,7 +151,7 @@ const Datatable = () => {
     { field: 'pyment_ok', headerName: 'Payment', width: 70 ,height:50,   renderCell: (params) => {
       return (
         <div style={{textAlign:"center"}} >
-            {params.row.pyment_ok ? (<p style={{color:"green"}}>Send</p>):(<p style={{color:"red"}}>Not Send</p>)}
+            {params.row.pyment_ok ? (<p style={{color:"green"}}>Recived</p>):(<p style={{color:"red"}}>Not Recived</p>)}
           </div>
           
           ) }},

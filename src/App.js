@@ -15,6 +15,7 @@ import Setting from "./pages/list/Setting";
 
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import Level from "./pages/list/Level";
 
 function App( ) {
   const { darkMode } = useContext(DarkModeContext);
@@ -94,6 +95,22 @@ function App( ) {
              
               
             </Route>
+
+            <Route path="levels">
+              <Route
+                index
+                element={
+                  <RequireAuth>
+                    <Level />
+                  </RequireAuth>
+                }
+              />
+           
+              
+             
+              
+            </Route>
+
             <Route path="settings">
               <Route
                 index
