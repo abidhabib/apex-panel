@@ -17,6 +17,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import Level from "./pages/list/Level";
 import WithdrwaRequests from "./pages/list/WithdrwaRequests";
+import WithdrwaApproveds from "./pages/list/WithdrwaApproveds";
 
 function App( ) {
   const { darkMode } = useContext(DarkModeContext);
@@ -117,6 +118,21 @@ function App( ) {
                 element={
                   <RequireAuth>
                     <WithdrwaRequests/>
+                  </RequireAuth>
+                }
+              />
+           
+              
+             
+              
+            </Route>
+              
+            <Route path="ApprovedWithdrwa">
+              <Route
+                index
+                element={
+                  <RequireAuth>
+                    <WithdrwaApproveds/>
                   </RequireAuth>
                 }
               />

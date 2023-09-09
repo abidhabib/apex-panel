@@ -5,15 +5,11 @@ import {
   getDocs,
   query,
   where,
-  doc,
-  updateDoc,
-  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Toaster, toast } from "react-hot-toast";
-import { Button } from "@mui/material";
 
-const WithdrawRequest = () => {
+const WithdrwaApproved = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -21,7 +17,7 @@ const WithdrawRequest = () => {
     const fetchData = async () => {
       try {
         const withdrawalRef = collection(db, "withdrawals");
-        const q = query(withdrawalRef, where("status", "==", "pending"));
+        const q = query(withdrawalRef, where("status", "==", "approved"));
         const querySnapshot = await getDocs(q);
         const withdrawals = [];
         querySnapshot.forEach((doc) => {
@@ -40,6 +36,8 @@ const WithdrawRequest = () => {
 
     fetchData();
   }, []);
+
+  // Function to format a Firestore timestamp
   const formatFirestoreTimestamp = (timestamp) => {
     if (timestamp) {
       const date = timestamp.toDate(); // Convert Firestore timestamp to JavaScript Date object
@@ -54,23 +52,6 @@ const WithdrawRequest = () => {
     }
     return ""; // Return an empty string if timestamp is undefined
   };
-  const updateStatus = async (id) => {
-    try {
-      const withdrawalRef = doc(db, "withdrawals", id);
-      await updateDoc(withdrawalRef, {
-        status: "approved",
-        approvedTime: serverTimestamp(),
-      });
-
-      // Remove the approved row from the local data
-      setData((prevData) => prevData.filter((item) => item.id !== id));
-
-      // Show a toast using react-hot-toast
-      toast.success("Status updated to Approved");
-    } catch (error) {
-      console.error("Error updating status:", error);
-    }
-  };
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
@@ -80,24 +61,11 @@ const WithdrawRequest = () => {
     { field: 'amount', headerName: 'Amount', width: 150 },
     { field: 'status', headerName: 'Status', width: 150 },
     {
-      field: 'timestamp',
-      headerName: 'Request Time',
+      field: 'approvedTime',
+      headerName: 'Approved Time',
       width: 200,
       valueGetter: (params) =>
         formatFirestoreTimestamp(params.row.approvedTime), // Format the Firestore timestamp
-    },
-    {
-      field: 'action',
-      headerName: 'Action',
-      width: 150,
-      renderCell: (params) => (
-<Button variant="contained" color="success" loading={isLoading}
-          onClick={() => updateStatus(params.row.id)}
-          disabled={params.row.status === "approved"}
-        >
-          Approve
-          </Button>
-      ),
     },
   ];
 
@@ -120,4 +88,4 @@ const WithdrawRequest = () => {
   );
 };
 
-export default WithdrawRequest;
+export default WithdrwaApproved;

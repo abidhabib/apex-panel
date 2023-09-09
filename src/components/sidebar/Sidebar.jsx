@@ -72,7 +72,12 @@ const Sidebar = () => {
             <span>Withdrwa Request</span>
           </li>
           </Link>
-
+          <Link to="/ApprovedWithdrwa" style={{ textDecoration: "none" }}>
+          <li>
+            <CreditCardIcon className="icon"  />
+            <span>Approved Withdrwa</span>
+          </li>
+          </Link>
           <Link to='/products'   style={{ textDecoration: "none" }} >
           <li>
             <LocalShippingIcon className="icon" />
