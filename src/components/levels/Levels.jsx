@@ -274,7 +274,7 @@ setRank("")
         rows={data}
         pageSize={9}
         rowsPerPageOptions={[9]}
-        checkboxSelection
+        
       />
       <Modal
         title="Add Level"

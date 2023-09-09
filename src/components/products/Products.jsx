@@ -240,7 +240,7 @@ const Products = () => {
         // columns={userColumns.concat(NameColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
-        checkboxSelection
+        
       />
       <Modal
         title="Basic Modal"

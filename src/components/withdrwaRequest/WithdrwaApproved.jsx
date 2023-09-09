@@ -81,7 +81,6 @@ const WithdrwaApproved = () => {
         rows={data}
         pageSize={10}
         rowsPerPageOptions={[9]}
-        checkboxSelection
       />
       <Toaster />
     </div>

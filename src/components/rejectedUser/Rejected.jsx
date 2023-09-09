@@ -238,7 +238,7 @@ const Rejected = () => {
         // columns={userColumns.concat(NameColumn)}
         pageSize={10}
         rowsPerPageOptions={[9]}
-        checkboxSelection
+        
       />
     </div>
   );

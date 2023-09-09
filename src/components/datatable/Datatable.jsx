@@ -200,7 +200,6 @@ const Datatable = () => {
         rows={data} // Make sure this matches your data structure
         pageSize={9}
         rowsPerPageOptions={[9]}
-        checkboxSelection
       />
     </div>
   </>
