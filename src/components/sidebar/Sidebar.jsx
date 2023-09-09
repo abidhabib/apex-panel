@@ -66,7 +66,12 @@ const Sidebar = () => {
             <span>Levels</span>
           </li>
           </Link>
-
+          <Link to="/withdrwa" style={{ textDecoration: "none" }}>
+          <li>
+            <CreditCardIcon className="icon"  />
+            <span>Withdrwa Request</span>
+          </li>
+          </Link>
 
           <Link to='/products'   style={{ textDecoration: "none" }} >
           <li>
