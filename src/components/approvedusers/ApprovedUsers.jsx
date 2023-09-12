@@ -2,15 +2,12 @@ import "../datatable/datatable.scss"
 import "./style.scss";
 
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns, userRows } from "../../datatablesource";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import {BiSolidEdit} from "react-icons/bi"
-import {AiFillCheckCircle, AiFillDelete} from "react-icons/ai"
+
+import { AiFillDelete} from "react-icons/ai"
 import {TbLockCheck} from "react-icons/tb"
 import { LRUCache } from 'lru-cache'
 import {
@@ -24,7 +21,7 @@ import {
   where
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { Check, CheckBoxRounded, NoAccountsOutlined, NoAccountsSharp, Verified, VerifiedUserOutlined } from "@mui/icons-material";
+import { NoAccountsOutlined, VerifiedUserOutlined } from "@mui/icons-material";
 import Sidebar from "../sidebar/Sidebar";
 
 const style = {
@@ -144,42 +141,7 @@ const ApprovedUsers = () => {
       },
     },
   ];
-  const NameColumn = [
-    {
-      field: "Name",
-      headerName: "Name",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="cellAction">
-           <p>{params.row.name}</p>
-            <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal>
-    </div>
-            
-          </div>
 
-
-
-
-        );
-      },
-    },
-  ];
 
 
   const reorderedUserColumns = [

@@ -7,7 +7,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../../firebase";
-import { Toaster, toast } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 const WithdrwaApproved = () => {
   const [data, setData] = useState([]);
