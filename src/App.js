@@ -18,6 +18,7 @@ import store from './redux/store';
 import Level from "./pages/list/Level";
 import WithdrwaRequests from "./pages/list/WithdrwaRequests";
 import WithdrwaApproveds from "./pages/list/WithdrwaApproveds";
+import MsgUsers from "./pages/list/MsgUsers";
 
 function App( ) {
   const { darkMode } = useContext(DarkModeContext);
@@ -97,7 +98,21 @@ function App( ) {
              
               
             </Route>
+            <Route path="MsgUsers">
+              <Route
+                index
+                element={
+                  <RequireAuth>
 
+<MsgUsers/>              
+    </RequireAuth>
+                }
+              />
+           
+              
+             
+              
+            </Route>
             <Route path="levels">
               <Route
                 index

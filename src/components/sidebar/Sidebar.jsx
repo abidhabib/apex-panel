@@ -84,10 +84,12 @@ const Sidebar = () => {
           </li>
           </Link>
           <p className="title">USEFUL</p>
+          <Link to="/MsgUsers" style={{ textDecoration: "none" }}>
           <li>
-            <InsertChartIcon className="icon" />
-            <span>Stats</span>
+            <CreditCardIcon className="icon"  />
+            <span>Send MSG</span>
           </li>
+          </Link>
           <li>
             <NotificationsNoneIcon className="icon" />
             <span>Notifications</span>
