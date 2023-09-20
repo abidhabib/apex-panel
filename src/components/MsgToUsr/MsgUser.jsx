@@ -5,7 +5,7 @@ import { collection, query, where, getDocs, updateDoc } from "firebase/firestore
 import { db } from "../../firebase";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { Margin } from "@mui/icons-material";
+import { ArrowBackIosNew, Margin, SendSharp, Telegram } from "@mui/icons-material";
 // ... Other imports ...
 
 const Products = () => {
@@ -70,11 +70,11 @@ const Products = () => {
     <div className="datatable">
     {/* ... Existing code ... */}
     <div className="notice-section" >
-      <h2 style={{margin: "16px"}}>Send Notice</h2>
+      <h2 style={{margin: "16px"}}>Send Message to User</h2>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <TextField
           variant="outlined"
-          label="Recipient (Email or ID)"
+          label="User (Email or ID)"
           value={recipient}
           onChange={(e) => setRecipient(e.target.value)}
           style={{ marginBottom: "16px",width: "50%" }}
@@ -95,7 +95,11 @@ const Products = () => {
           onClick={handleSendNotice}
           style={{ marginBottom: "16px" ,width: "50%"}}
         >
-          Send Notice
+          Send Message <Telegram
+          fontSize="small"
+          style={{ marginLeft: "8px" }}
+
+          />
         </Button>
       </div>
     </div>
