@@ -53,6 +53,7 @@ const Products = () => {
           message: notice,
           timestamp: Date.now(),
         },
+        messageRead: false, // Add this field to mark the message as unread
       });
   
       toast.success("Notice sent successfully");
@@ -98,14 +99,12 @@ const Products = () => {
           Send Message <Telegram
           fontSize="small"
           style={{ marginLeft: "8px" }}
-
           />
         </Button>
       </div>
     </div>
     {/* ... Existing code ... */}
   </div>
-
   );
 };
 
